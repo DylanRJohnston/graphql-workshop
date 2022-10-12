@@ -12,7 +12,7 @@ type PostCreateFields struct {
 }
 
 func (d *Dependencies) PostCreate(ctx context.Context, userID string, newPost PostCreateFields) (models.Post, error) {
-	// Auth or other business logic goes here
+	// Other business logic goes here
 	// Validate titles, content, do we ban swear words, length limits, etc?
 	return d.Posts.Create(ctx, ports.PostCreate{
 		UserID:  userID,

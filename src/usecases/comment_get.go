@@ -6,7 +6,7 @@ import (
 )
 
 func (d *Dependencies) CommentGet(ctx context.Context, id string) (models.Comment, error) {
-	// Auth or other business logic goes here
+	// Other business logic goes here
 	// Are all comments visible to everyone? Are there block lists, etc?
 	return d.Comments.Get(ctx, id)
 }

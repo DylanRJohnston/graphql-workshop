@@ -6,7 +6,7 @@ import (
 )
 
 func (d *Dependencies) UserGetPosts(ctx context.Context, userID string) ([]models.Post, error) {
-	// Auth or other business logic goes here
+	// Other business logic goes here
 	// Are all posts visible to everyone? Are there block lists, etc?
 	return d.Posts.ForUser(ctx, userID)
 }

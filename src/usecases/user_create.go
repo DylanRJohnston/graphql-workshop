@@ -14,7 +14,7 @@ type UserCreateFields struct {
 }
 
 func (d *Dependencies) UserCreate(ctx context.Context, user UserCreateFields) (models.User, error) {
-	// Auth or other business logic goes here
+	// Other business logic goes here
 	// Validate emails, birthdays, etc here
 	return d.Users.Create(ctx, ports.UserCreate{
 		Name:     user.Name,

@@ -6,7 +6,7 @@ import (
 )
 
 func (d *Dependencies) UserGet(ctx context.Context, id string) (models.User, error) {
-	// Auth or other business logic goes here
+	// Other business logic goes here
 	// Are all users visible to everyone? Are there block lists, etc?
 	return d.Users.Get(ctx, id)
 }

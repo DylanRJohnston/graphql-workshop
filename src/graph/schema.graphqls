@@ -1,0 +1,34 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  profile: String
+  birthday: String!
+  posts: [Post!]!
+  comments: [Comment!]!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  comments: [Comment!]!
+  user: User!
+}
+
+type Comment {
+  id: ID!
+  content: String!
+  user: User!
+  post: Post!
+}
+
+type Query {
+  user(id: ID!): User
+  post(id: ID!): Post
+  comment(id: ID!): Comment
+}

@@ -12,7 +12,7 @@ type CommentCreateFields struct {
 }
 
 func (d *Dependencies) CommentCreate(ctx context.Context, postID string, comment CommentCreateFields) (models.Comment, error) {
-	// Auth or other business logic goes here
+	// Other business logic goes here
 	// Validate the comment content, should we ban swear words, is there a block list, maximum length, etc
 	return d.Comments.Create(ctx, ports.CommentCreate{
 		UserID:  comment.UserID,

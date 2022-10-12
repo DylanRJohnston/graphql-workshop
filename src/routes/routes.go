@@ -18,6 +18,9 @@ func New(deps usecases.Dependencies) *gin.Engine {
 
 	r := gin.Default()
 
+	r.POST("/query", d.GraphQLHandler())
+	r.GET("/", d.PlaygroundHandler())
+
 	r.GET("/users/:userID", d.UserGet)
 	r.GET("/users/:userID/posts", d.UserGetPosts)
 	r.GET("/posts/:postID", d.PostGet)
