@@ -61,6 +61,29 @@ func (s *SQLiteCommentRepository) Create(ctx context.Context, fields ports.Comme
 	return comment, nil
 }
 
+var comments_for_post_query = `
+	SELECT id, userID, postID, content
+	FROM comments
+	WHERE postID = ?
+`
+
 func (s *SQLiteCommentRepository) ForPost(ctx context.Context, postID string) ([]models.Comment, error) {
-	panic("unimplemented")
+	rows, err := s.db.Query(comments_for_post_query, postID)
+	if err != nil {
+		return nil, err
+	}
+
+	comments := []models.Comment{}
+
+	for rows.Next() {
+		comment := models.Comment{}
+		err := rows.Scan(&comment.ID, &comment.UserID, &comment.PostID, &comment.Content)
+		if err != nil {
+			return nil, err
+		}
+
+		comments = append(comments, comment)
+	}
+
+	return comments, nil
 }
