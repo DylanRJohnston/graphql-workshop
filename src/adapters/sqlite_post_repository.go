@@ -73,7 +73,7 @@ func (s *SQLitePostRepository) ForUser(ctx context.Context, userID string) ([]mo
 		return nil, err
 	}
 
-	post := []models.Post{}
+	posts := []models.Post{}
 
 	for rows.Next() {
 		post := models.Post{}
@@ -81,7 +81,9 @@ func (s *SQLitePostRepository) ForUser(ctx context.Context, userID string) ([]mo
 		if err != nil {
 			return nil, err
 		}
+
+		posts = append(posts, post)
 	}
 
-	return post, nil
+	return posts, nil
 }
