@@ -117,4 +117,40 @@ func Test_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	w, req = newRequest(t, "GET", fmt.Sprintf("/users/%s", blogUser.ID), nil)
+	gin.ServeHTTP(w, req)
+	assert.Equal(t, 200, w.Code)
+
+	expectedUser := models.User{}
+	err = json.NewDecoder(w.Body).Decode(&expectedUser)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, blogUser, expectedUser)
+
+	w, req = newRequest(t, "GET", fmt.Sprintf("/posts/%s", post.ID), nil)
+	gin.ServeHTTP(w, req)
+	assert.Equal(t, 200, w.Code)
+
+	expectedPost := models.Post{}
+	err = json.NewDecoder(w.Body).Decode(&expectedPost)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, post, expectedPost)
+
+	w, req = newRequest(t, "GET", fmt.Sprintf("/comments/%s", comment.ID), nil)
+	gin.ServeHTTP(w, req)
+	assert.Equal(t, 200, w.Code)
+
+	expectedComment := models.Comment{}
+	err = json.NewDecoder(w.Body).Decode(&expectedComment)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, comment, expectedComment)
 }
