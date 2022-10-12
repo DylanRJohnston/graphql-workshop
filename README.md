@@ -232,3 +232,56 @@ models:
 ```
 
 - Run `gqlgen` again `go run github.com/99designs/gqlgen generate`
+- Keep filling out resolvers until you can answer this query
+
+```gql
+{
+  user(id: "cb4e6d63-64d2-4482-a46a-9c7c697ff72b") {
+    id
+    name
+    email
+    profile
+    posts {
+      id
+      title
+      content
+      comments {
+        content
+        user {
+          name
+          profile
+        }
+      }
+    }
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "user": {
+      "id": "cb4e6d63-64d2-4482-a46a-9c7c697ff72b",
+      "name": "Dylan Johnston",
+      "email": "dylan.johnston@familyzone.com",
+      "profile": "https://images.dog.ceo/breeds/bulldog-french/n02108915_3382.jpg",
+      "posts": [
+        {
+          "id": "747bf43c-6be0-4fe2-9c59-658e1e3157d4",
+          "title": "Avionics",
+          "content": "According to all known laws of aviation ...",
+          "comments": [
+            {
+              "content": "Great post man! Can't wait to read more.",
+              "user": {
+                "name": "Barry B Benson",
+                "profile": "https://static.wikia.nocookie.net/beemovie/images/1/11/Barry-B-Benson.png/revision/latest?cb=20190513100654"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```

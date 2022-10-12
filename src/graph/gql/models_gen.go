@@ -5,7 +5,9 @@ package gql
 type Comment struct {
 	ID      string `json:"id"`
 	Content string `json:"content"`
+	UserID  string `json:"userID"`
 	User    *User  `json:"user"`
+	PostID  string `json:"postID"`
 	Post    *Post  `json:"post"`
 }
 
@@ -14,6 +16,7 @@ type Post struct {
 	Title    string     `json:"title"`
 	Content  string     `json:"content"`
 	Comments []*Comment `json:"comments"`
+	UserID   string     `json:"userID"`
 	User     *User      `json:"user"`
 }
 

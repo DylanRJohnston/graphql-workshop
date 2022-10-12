@@ -14,7 +14,20 @@ import (
 
 // User is the resolver for the user field.
 func (r *commentResolver) User(ctx context.Context, obj *gql.Comment) (*gql.User, error) {
-	panic(fmt.Errorf("not implemented: User - user"))
+	user, err := r.Deps.Users.Get(ctx, obj.UserID)
+	if err != nil {
+		return nil, gqlerror.Errorf("Error encountered while fetching User %s", err.Error())
+	}
+
+	return &gql.User{
+		ID:       "id",
+		Name:     user.Name,
+		Email:    user.Email,
+		Profile:  &user.Profile,
+		Birthday: user.Birthday,
+		Posts:    nil,
+		Comments: nil,
+	}, nil
 }
 
 // Post is the resolver for the post field.
@@ -24,7 +37,24 @@ func (r *commentResolver) Post(ctx context.Context, obj *gql.Comment) (*gql.Post
 
 // Comments is the resolver for the comments field.
 func (r *postResolver) Comments(ctx context.Context, obj *gql.Post) ([]*gql.Comment, error) {
-	panic(fmt.Errorf("not implemented: Comments - comments"))
+	comments, err := r.Deps.Comments.ForPost(ctx, obj.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	gqlComment := []*gql.Comment{}
+	for _, comment := range comments {
+		gqlComment = append(gqlComment, &gql.Comment{
+			ID:      comment.ID,
+			Content: comment.Content,
+			UserID:  comment.UserID,
+			User:    nil,
+			PostID:  comment.PostID,
+			Post:    obj,
+		})
+	}
+
+	return gqlComment, nil
 }
 
 // User is the resolver for the user field.
@@ -62,6 +92,7 @@ func (r *queryResolver) Post(ctx context.Context, id string) (*gql.Post, error) 
 		Title:    post.Title,
 		Content:  post.Content,
 		Comments: nil,
+		UserID:   post.UserID,
 		User:     nil,
 	}, nil
 }
@@ -76,7 +107,9 @@ func (r *queryResolver) Comment(ctx context.Context, id string) (*gql.Comment, e
 	return &gql.Comment{
 		ID:      comment.ID,
 		Content: comment.Content,
+		UserID:  comment.UserID,
 		User:    nil,
+		PostID:  comment.PostID,
 		Post:    nil,
 	}, nil
 }
@@ -95,6 +128,7 @@ func (r *userResolver) Posts(ctx context.Context, obj *gql.User) ([]*gql.Post, e
 			Title:    post.Title,
 			Content:  post.Content,
 			Comments: nil,
+			UserID:   post.UserID,
 			User:     obj,
 		})
 	}

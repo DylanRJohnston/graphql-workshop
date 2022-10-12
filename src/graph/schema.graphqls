@@ -17,13 +17,16 @@ type Post {
   title: String!
   content: String!
   comments: [Comment!]!
+  userID: ID!
   user: User!
 }
 
 type Comment {
   id: ID!
   content: String!
+  userID: ID!
   user: User!
+  postID: ID!
   post: Post!
 }
 
