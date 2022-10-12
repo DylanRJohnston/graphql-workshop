@@ -61,6 +61,27 @@ func (s *SQLitePostRepository) Create(ctx context.Context, fields ports.PostCrea
 	return post, nil
 }
 
+var posts_for_user_query = `
+	SELECT id, userID, title, content
+	FROM posts
+	WHERE userID = ?
+`
+
 func (s *SQLitePostRepository) ForUser(ctx context.Context, userID string) ([]models.Post, error) {
-	panic("unimplemented")
+	rows, err := s.db.Query(posts_for_user_query, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	post := []models.Post{}
+
+	for rows.Next() {
+		post := models.Post{}
+		err := rows.Scan(&post.ID, &post.UserID, &post.Title, &post.Content)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return post, nil
 }
