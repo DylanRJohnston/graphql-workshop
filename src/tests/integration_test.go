@@ -29,7 +29,7 @@ func setup() *gin.Engine {
 	comments := adapters.NewSQLiteCommentRepository(db)
 	posts := adapters.NewSQLitePostRepository(db)
 
-	deps := usecases.Dependencies{
+	deps := &usecases.Dependencies{
 		Users:    users,
 		Comments: comments,
 		Posts:    posts,

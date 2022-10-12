@@ -12,7 +12,9 @@ import (
 func (d *Dependences) GraphQLHandler() gin.HandlerFunc {
 
 	h := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{
-		Resolvers:  &graph.Resolver{},
+		Resolvers: &graph.Resolver{
+			Deps: d.usecase,
+		},
 		Directives: generated.DirectiveRoot{},
 		Complexity: generated.ComplexityRoot{},
 	}))

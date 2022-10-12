@@ -168,3 +168,67 @@
 
 - In `src/graph/resolver.go` add our `usecases.Dependencies` to the `Resolver` struct so we have access to our use case handlers in our resolvers.
 - Start filling out the implementation of our resolvers in `src/graph/schema.resolvers.go`
+- Make sure to connect the dependency injection in `src/routes/graphql.go`
+  ```go
+  h := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{
+    Resolvers: &graph.Resolver{
+      Dependencies: d.usecase,
+    },
+    Directives: generated.DirectiveRoot{},
+    Complexity: generated.ComplexityRoot{},
+  }))
+  ```
+- You should then be able to retrieve a user
+  ```gql
+  {
+    user(id: "9b3b2c98-78ab-461a-9ed9-b99dabfc472b") {
+      id
+      name
+      email
+      profile
+    }
+  }
+  ```
+- If we try a more complex query we don't get any results for posts as we haven't yet created resolvers for linking our data together
+
+```gql
+{
+  user(id: "9b3b2c98-78ab-461a-9ed9-b99dabfc472b") {
+    id
+    name
+    email
+    profile
+    posts {
+      id
+      title
+      content
+    }
+  }
+}
+```
+
+- We need to tell `gqlgen` to generate resolvers for those fields in `gqlgen.yml`
+
+```yml
+models:
+  User:
+    fields:
+      posts:
+        resolver: true
+      comments:
+        resolver: true
+  Post:
+    fields:
+      comments:
+        resolver: true
+      user:
+        resolver: true
+  Comment:
+    fields:
+      user:
+        resolver: true
+      post:
+        resolver: true
+```
+
+- Run `gqlgen` again `go run github.com/99designs/gqlgen generate`

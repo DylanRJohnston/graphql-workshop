@@ -61,3 +61,21 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  User:
+    fields:
+      posts:
+        resolver: true
+      comments:
+        resolver: true
+  Post:
+    fields:
+      comments:
+        resolver: true
+      user:
+        resolver: true
+  Comment:
+    fields:
+      user:
+        resolver: true
+      post:
+        resolver: true

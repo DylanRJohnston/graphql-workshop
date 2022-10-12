@@ -7,13 +7,13 @@ import (
 )
 
 type Dependences struct {
-	usecase usecases.Dependencies
+	usecase *usecases.Dependencies
 }
 
 // No business logic should exist in these gin controllers
 // only packing and unpacking of data to and from the http layer
 
-func New(deps usecases.Dependencies) *gin.Engine {
+func New(deps *usecases.Dependencies) *gin.Engine {
 	d := Dependences{deps}
 
 	r := gin.Default()

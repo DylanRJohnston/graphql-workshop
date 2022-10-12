@@ -7,5 +7,5 @@ import "graphql-workshop/src/usecases"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	usecases.Dependencies
+	Deps *usecases.Dependencies
 }
